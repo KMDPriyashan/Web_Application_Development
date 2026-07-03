@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/KMDPriyashan/Web_Application_Development/issues"
   },
-  "homepage": "https://github.com/KMDPriyashan/Web_Application_Development#readme"
+  "homepage": "https://github.com/KMDPriyashan/Web_Application_Development#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
