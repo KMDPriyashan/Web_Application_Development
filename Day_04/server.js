@@ -8,6 +8,9 @@ const SECRET_KEY = 'your_secret_key_here'; // Note: Hardcoded secret is a known 
 
 app.use(express.json());
 
+// Static files (HTML) පෙන්වීම සඳහා මෙය එකතු කරන්න
+app.use(express.static('Day_04'));
+
 // --- ROUTES ---
 
 // Login Route: Queries the SQLite database securely using a prepared statement (?)
