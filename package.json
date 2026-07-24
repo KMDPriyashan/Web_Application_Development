@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/KMDPriyashan/Web_Application_Development#readme",
   "dependencies": {
+    "better-sqlite3": "^13.0.1",
     "express": "^5.2.1"
   }
 }
