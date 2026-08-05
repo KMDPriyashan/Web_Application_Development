@@ -3,7 +3,7 @@ const  jwt = require('jsonwebtoken');
 const security_key = 'hict3202-super-script';
 
 function verifytoken (req, res, next){
-    const authheader = req.headers['authentication'];
+    const authheader = req.headers['authorization'];
 
     if(!authheader){
         return res.status(401).json({
