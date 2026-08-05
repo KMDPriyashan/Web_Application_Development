@@ -1,27 +1,32 @@
-const  jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-const security_key = 'hict3202-super-script';
+// SECURITY DEBT: Hardcoded - will be fixed in Week 7
+const SECRET_KEY = 'hict32022-super-secret';
 
-function verifytoken (req, res, next){
-    const authheader = req.headers['authorization'];
+function verifyToken(req, res, next) {
+  // Get the Authorization header
+  const authHeader = req.headers['authorization'];
 
-    if(!authheader){
-        return res.status(401).json({
-            message: 'no token provided , please login in first'
-        });
-    }
+  // No token provided
+  if (!authHeader) {
+    return res.status(401).json({
+      message: 'No token provided. Please log in.'
+    });
+  }
 
-    const token = authheader.split(' ')[1];
+  // Extract token from "Bearer <token>"
+  const token = authHeader.split(' ')[1];
 
-    try{
-        const decode = jwt.verify(token, security_key);
-        req.user = decode;
-        next();
-    } catch (error){
-        return res.status(403).json({
-            message: 'invalid or expired token..!'
-        })
-    }
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.user = decoded;  // Attach user data to request
+    next();              // Continue to the route handler
+  } catch (error) {
+    return res.status(403).json({
+      message: 'Invalid or expired token.'
+    });
+  }
 }
 
-module.exports = {verifytoken , security_key};
+module.exports = { verifyToken, SECRET_KEY };
