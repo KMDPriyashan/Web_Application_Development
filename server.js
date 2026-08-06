@@ -116,9 +116,51 @@ app.get('/dashboard', verifytoken, (req,res) => {
     });
 });
 
+app.get('/api/users', verifytoken, (req,res) =>{
+    if(req.user.role !== 'admin'){
+        return res.status(403).json({
+            message: 'Access denied. Admins only.'
+        })
+    }
+    try{
+        const users = db.prepare('select id , username, role from users').all();
+        res.json({
+            users: users,
+            count: users.length
+        })
+    }catch (error){
+        console.error('error fetching users..!', error);
+        return res.status(500).json({
+            message: 'Internal server error. Please try again later.'
+        })
+        
+    }
 
+})
+
+app.get('/api/profile', verifytoken, (req,res) =>{
+    try {
+        const user = db.prepare('select id, username, role from users where id = ?').get(req.user.id);
+        if(!user){
+            return res.status(404).json({
+                message: 'User not found.'
+            })
+        }
+        res.json({
+            user: user
+        })
+    }catch (error){
+        console.error('profile error', error);
+        return res.status(500).json({
+            message: 'Internal server error. Please try again later.'
+        })
+        
+    }
+})
 
 
 app.listen(port, ()=> {
     console.log(`server is running http://localhost:${port}`);
+    console.log('Database: user.db');
+    
 });
