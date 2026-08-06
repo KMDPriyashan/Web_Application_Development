@@ -2,9 +2,12 @@
   "name": "web_application_development",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "server.js",
+    "dev": "server.js"
+
   },
   "repository": {
     "type": "git",
