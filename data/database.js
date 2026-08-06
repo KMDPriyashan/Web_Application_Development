@@ -1,12 +1,12 @@
 const database = require('better-sqlite3');
-const db = new database('users/db');
+const db = new database('users.db');
 
 db.exec(`
     create table if not exists users (
     id integer primary key autoincrement,
     username text unique not null,
     password text not  null,
-    role text notnull)
+    role text not null)
 `);
 
 const count = db.prepare('select count(*) as total from users');
