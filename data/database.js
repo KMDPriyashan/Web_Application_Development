@@ -1,24 +1,48 @@
-const database = require('better-sqlite3');
-const db = new database('users.db');
+const Database = require('better-sqlite3');
+const bcrypt = require('bcrypt');
 
+const db = new Database('clinic.db');
+
+// Create tables
 db.exec(`
-    create table if not exists users (
-    id integer primary key autoincrement,
-    username text unique not null,
-    password text not  null,
-    role text not null)
+  CREATE TABLE IF NOT EXISTS users (
+    id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    role     TEXT NOT NULL
+  )
 `);
 
-const count = db.prepare('select count(*) as total from users');
+db.exec(`
+  CREATE TABLE IF NOT EXISTS appointments (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    patient TEXT NOT NULL,
+    reason  TEXT NOT NULL
+  )
+`);
 
-if (count.n === 0){
-    const insert = db.prepare('insert into users (username, password, role) values (?, ?, ?)');
+// Check if admin user exists
+const adminCheck = db.prepare('SELECT COUNT(*) AS count FROM users WHERE username = ?').get('reception');
 
-    insert.run('kamal', '1234', 'admin');
-    insert.run('nimal', 'abcd', 'student');
-    console.log('✅ database with two seeds...!');
-    
+if (adminCheck.count === 0) {
+  // Hash the admin password
+  const hashed = bcrypt.hashSync('admin123', 10);
+  
+  const insertUser = db.prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)');
+  insertUser.run('reception', hashed, 'admin');
+  console.log('✅ Admin user seeded: reception / admin123');
 }
 
-console.log('✅ database connect and ready..!');
+// Check if appointments exist
+const appCheck = db.prepare('SELECT COUNT(*) AS count FROM appointments').get();
+
+if (appCheck.count === 0) {
+  const insertApp = db.prepare('INSERT INTO appointments (patient, reason) VALUES (?, ?)');
+  insertApp.run('Kamal', 'Fever');
+  insertApp.run('Nimali', 'Checkup');
+  insertApp.run('Sunil', 'Follow-up');
+  console.log('✅ 3 appointments seeded');
+}
+
+console.log('✅ Database connected and ready');
 module.exports = db;

@@ -1,2 +1,4 @@
-/node_modules
-users.db
+node_modules/
+clinic.db
+clinic.db-journal
+.env
