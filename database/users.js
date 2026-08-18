@@ -9,7 +9,7 @@ const users = [
         id: 3, username: 'sunil', password: '1122', role: 'user'
     },
     {
-        id: 4, username: 'dulash', password: '1111', role: 'admin'
+        id: 4, username: 'dulash', password: '1111', role: 'reception'
     }
 ];
 
